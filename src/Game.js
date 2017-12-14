@@ -52,8 +52,6 @@ export default class Game {
 			this.state.startCell = this._generateFigure();
 			this._refreshCellAfterTurn(x, y);
 			this.state.count++;
-			if (this.endOfGameCheck())
-				console.log("Игра окончена! Сделано " + this.count + " ходов.");
 		}
 	}
 
@@ -124,8 +122,7 @@ export default class Game {
     return 0 <= x && x <= this.side - 1 && 0 <= y && y <= this.side - 1;
 	}
 
-	endOfGameCheck() {
+	isGameOver() {
   	return this.boardValues.every(row => row.every(val => val));
   }
 }
-

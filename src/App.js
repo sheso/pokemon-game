@@ -23,6 +23,12 @@ class App extends Component {
     this.forceUpdate();
   }
 
+  getGameOverText() {
+    if (this.game.isGameOver()) {
+      return "Игра окончена";
+    }
+  }
+
   render() {
     return (
       <div className="app">
@@ -32,6 +38,7 @@ class App extends Component {
         <div className="statebar">
           <InitSquare value={this.game.startCellValue} />
           <MoveCounter value={this.game.count} />
+          <div>{this.getGameOverText()}</div>
           <UndoButton disabled={!this.game.undoIsOn()} handleClick={() => {
             this.handleUndoButtonClick();
           }}/>
