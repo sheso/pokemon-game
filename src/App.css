@@ -1,0 +1,59 @@
+.app{
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  margin: 5% 25%;
+}
+
+.gameboard-container {
+}
+
+.statebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gameboard {
+  border-collapse: collapse;
+}
+
+.gameboard td {
+  width: 100px;
+  height: 100px;
+  min-width: 50px;
+  min-height: 50px;
+  text-align: center;
+  border: 1px solid black;
+  background-position: center, center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.initSquare {
+  min-height: 100px;
+  min-width: 100px;
+  background-position: center, center;
+  background-size: contain;
+}
+
+.movecounter,
+.initSquare,
+.button {
+  margin: 5px;
+  text-align: center;
+}
+
+.movecounter-number {
+  font-size: 72px;
+}
+
+.button {
+  border: 1px solid black;
+  border-radius: 5px;
+  height: 30px;
+  width: 100px;
+  text-align: center;
+  vertical-align: middle;
+}
