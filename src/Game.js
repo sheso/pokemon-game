@@ -1,17 +1,34 @@
 import clone from 'clone';
+import seedrandom from 'seedrandom';
 
 export default class Game {
 	constructor() {
 		this.side = 6;
-		this.startCellValue = this._generateFigure(); 
-		this.boardValues = new Array(this.side).fill(0).map(arr => new Array(this.side).fill(0));
-		this.count = 0;
-		this.prevBoardValues = new Array(this.side).fill(0).map(arr => new Array(this.side).fill(0));
-		this.prevStartCellValue = this.startCellValue;
+		this.state = {
+			boardValues: new Array(this.side).fill(0).map(arr => new Array(this.side).fill(0)),
+			count: 0,
+			startCell: null,
+			curSeed: true,
+		};
+		this.prevState = null;
+		this.state.startCell = this._generateFigure();
+	}
+
+	get boardValues() {
+		return this.state.boardValues;
+	}
+
+	get count() {
+		return this.state.count;
+	}
+
+	get startCellValue() {
+		return this.state.startCell;
 	}
 
 	_generateFigure() {
-		var r = Math.random();
+		var generator = new Math.seedrandom('', {state: this.state.curSeed});
+		var r = generator();
 		var newFigure;
 		if (r < 0.09)
 			newFigure = 2;
@@ -22,6 +39,7 @@ export default class Game {
 		else if (r >= 0.14 && r < 1)
 			newFigure = 1;
 
+		this.state.curSeed = generator.state();
 		return newFigure;
 	}
 
@@ -29,21 +47,23 @@ export default class Game {
 		if (this.boardValues[y][x])
 			return;
 		else {
-			this.prevBoardValues = clone(this.boardValues);
-			this.prevStartCellValue = clone(this.startCellValue);
+			this.prevState = clone(this.state);
 			this._setFigure(x, y, this.startCellValue);
-			this.startCellValue = this._generateFigure();
+			this.state.startCell = this._generateFigure();
 			this._refreshCellAfterTurn(x, y);
-			this.count++;
+			this.state.count++;
 			if (this.endOfGameCheck())
 				console.log("Игра окончена! Сделано " + this.count + " ходов.");
 		}
 	}
 
 	undoButtonOnClick() {
-		this.boardValues = clone(this.prevBoardValues);
-		this.startCellValue = clone(this.prevStartCellValue);
-		this.count--;
+		this.state = clone(this.prevState);
+		this.prevState = null;
+	}
+
+	undoIsOn() {
+		return this.prevState !== null;
 	}
 
 	_setFigure(x, y, fId) {
@@ -109,8 +129,3 @@ export default class Game {
   }
 }
 
-var testGame = new Game();
-testGame.cellOnClick(0, 0);
-testGame.cellOnClick(0, 1);
-testGame.cellOnClick(0, 2);
-console.log(testGame.boardValues);

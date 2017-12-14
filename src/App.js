@@ -15,9 +15,6 @@ class App extends Component {
 
   handleCellClick(x, y) {
     this.game.cellOnClick(x, y);
-    let element = document.getElementById("undobutton");
-    if (element.disabled)
-      element.disabled = false;
     this.forceUpdate();
   }
 
@@ -35,10 +32,8 @@ class App extends Component {
         <div className="statebar">
           <InitSquare value={this.game.startCellValue} />
           <MoveCounter value={this.game.count} />
-          <UndoButton handleClick={() => {
+          <UndoButton disabled={!this.game.undoIsOn()} handleClick={() => {
             this.handleUndoButtonClick();
-            let element = document.getElementById("undobutton");
-            element.disabled = true;
           }}/>
         </div>
       </div>
